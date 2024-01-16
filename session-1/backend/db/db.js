@@ -1,4 +1,4 @@
-const connectionString = require('../secrates');
+const {connectionString} = require('../secrates');
 const mongoose = require('mongoose')
 
 mongoose.connect(connectionString+"Practice")
