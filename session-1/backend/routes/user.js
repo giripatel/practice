@@ -24,10 +24,10 @@ router.post('/signup',validationMiddleware,async (req,res) => {
     })
 })
 
-router.get('/login',validationMiddleware, async (req,res) => {
+router.get('/login',validationMiddleware,(req,res) => {
     const email = req.email;
     
-    const jwtToken = await jwt.sign({email : email},jwtSecrate)
+    const jwtToken = jwt.sign({email : email},jwtSecrate)
     console.log(jwtSecrate)
     res.json({
         message : jwtToken 
@@ -47,21 +47,6 @@ router.get('/home',authentication,async(req,res) =>{
     })
 })
 
-router.get('/test',async (req,res) => {
-    const head = req.query.email
-    const data = await User.find({
-        email : {
-            "$regex": head
-        }
-    },{password : 0})
-    res.json({
-        // user : data.map(user => ({
-        //     email : user.email,
-        //     name : user.name
-        // }))
-        users : data
-    })
-})
 
 router.patch('/update',authentication,async (req,res) => {
     
