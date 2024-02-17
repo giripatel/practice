@@ -2,9 +2,9 @@ import React from 'react'
 import Logo from '../assets/Logo.svg'
 const NavrBar = () => {
   return (
-    <div className='m-auto'>
-      <nav className='flex  justify-between m-4 p-2'>
-        <img src={Logo} alt="" />
+    <div className='m-auto bg-transparent'>
+      <nav className='flex justify-between bg-transparent m-4 p-2'>
+        <img src={Logo} alt="Logo" />
         <div className='flex space-x-7 justify-start '>
         <h6 className='text-gray-700 text-sm mt-3'>Home</h6>
         <h6 className='text-gray-700 text-sm mt-3'>About</h6>
