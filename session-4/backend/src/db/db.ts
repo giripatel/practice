@@ -1,10 +1,11 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-
+import { Prisma, PrismaClient, } from "@prisma/client";
+import {PrismaClientKnownRequestError} from'@prisma/client/runtime/binary'
 const prisma = new PrismaClient();
 
 //******* Create user *******/
 export const createUser = async (userName : string, firstName : string, lastName :string, password :string, balance : number) => {
     
+    try{
     const create = await prisma.user.create({
         data : {
             userName : userName,
@@ -21,11 +22,19 @@ export const createUser = async (userName : string, firstName : string, lastName
             account : true
         }
     })
-
-    console.log(createUser)
     return create;
+    }catch(err)
+    {
+        if(err instanceof PrismaClientKnownRequestError){
+            
+            return null;
+
+        }
+    }
+    
 }
 
+//**********Update User ******/
 interface UpdateUser {
     userName? : string,
     firstName? : string,
@@ -33,12 +42,11 @@ interface UpdateUser {
     password? : string
 }
 
-//**********Update User ******/
-export const updateUser = async (id : number , updateDetails : UpdateUser) => {
+export const updateUser = async (userName : string , updateDetails : UpdateUser) => {
 
     const update = await prisma.user.update({
         where: {
-            id : id
+            userName : userName
         },
         data: updateDetails
     })
@@ -53,11 +61,11 @@ export const delletUser = async () => {
 
 //********** Get user *********/
 
-export const getUser = async (id : number) => {
+export const getUser = async (userName : string) => {
 
     const user = await prisma.user.findFirst({
         where : {
-            id : id
+            userName : userName
         },
         select : {
             userName : true,

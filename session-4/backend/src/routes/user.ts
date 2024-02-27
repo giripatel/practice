@@ -1,8 +1,11 @@
 import { Console, log } from 'console';
 import {Router,Request,Response} from 'express'
-import {mySchema} from '../zodvalidation/validation'
-import { createUser } from '../db/db';
+import {mySchema, signInSchema} from '../zodvalidation/validation'
+import { createUser, updateUser, getUser,getAllUsers } from '../db/db';
 import { createAuthToken } from '../middlewares/createAuthToken';
+import { validateAuth } from '../middlewares/validateAuth';
+
+
 const userRouter: Router = Router();
 
 userRouter.post('/signup',async (req : Request,res :Response) => {
@@ -38,7 +41,39 @@ userRouter.post('/signup',async (req : Request,res :Response) => {
     });
 })
 
-userRouter.post('/signin',(req : Request, res : Response) => {
+userRouter.post('/signin',async (req : Request, res : Response) => {
+
+    const userName : string = req.body.userName
+    const password : string = req.body.password
+
+    const {success} = signInSchema.safeParse({
+        userName : userName,
+        password : password
+    })
+
+    console.log(userName)
+    console.log(password)
+    if(!success){
+        res.status(401).json({
+            message : "Please enter valid email and password"
+        })
+        return;
+    }
+
+    const user = await getUser(userName);
+    if(!user){
+        res.status(403).json({
+            message : "Please create an account"
+        })
+        return;
+    }
+
+    const authToken = createAuthToken(userName);
+
+    res.status(200).json({
+        message : "your sign is successfull",
+        authToken : authToken
+    })
 
 })
 

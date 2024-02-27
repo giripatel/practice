@@ -9,65 +9,70 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = exports.delletUser = exports.updateUser = exports.createUser = void 0;
+exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
 const client_1 = require("@prisma/client");
+const binary_1 = require("@prisma/client/runtime/binary");
 const prisma = new client_1.PrismaClient();
-// export const createUser = async ({userName, firstName, lastName , password , balance } : Inputs) => {
+//******* Create user *******/
 const createUser = (userName, firstName, lastName, password, balance) => __awaiter(void 0, void 0, void 0, function* () {
-    // export const createUser = async () => {
-    console.log("User Name ============= : " + userName);
-    console.log("First Name ============ : " + firstName);
-    console.log("Last Name ============= : " + lastName);
-    console.log("Passowrd ============== : " + password);
-    const create = yield prisma.user.create({
-        data: {
-            userName: userName,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            account: {
-                create: {
-                    balance: 8000
+    try {
+        const create = yield prisma.user.create({
+            data: {
+                userName: userName,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                account: {
+                    create: {
+                        balance: 8000
+                    }
                 }
+            },
+            include: {
+                account: true
             }
-        },
-        include: {
-            account: true
+        });
+        return create;
+    }
+    catch (err) {
+        if (err instanceof binary_1.PrismaClientKnownRequestError) {
+            return null;
         }
-        // data : {
-        //     userName : 'test@123.com',
-        //     firstName : 'firstName', 
-        //     lastName : 'lastName',
-        //     password : 'password',
-        //     account : {
-        //         create : {
-        //             balance : 123343
-        //         }
-        //     }
-        // },
-        // include : {
-        //     account : true
-        // }
-    });
-    console.log(exports.createUser);
-    return create;
+    }
 });
 exports.createUser = createUser;
-const updateUser = (id, updateDetails) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUser = (userName, updateDetails) => __awaiter(void 0, void 0, void 0, function* () {
     const update = yield prisma.user.update({
         where: {
-            id: id
+            userName: userName
         },
         data: updateDetails
     });
+    return update;
 });
 exports.updateUser = updateUser;
+//********* Delete User *********/
 const delletUser = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.delletUser = delletUser;
+//********** Get user *********/
+const getUser = (userName) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield prisma.user.findFirst({
+        where: {
+            userName: userName
+        },
+        select: {
+            userName: true,
+            firstName: true,
+            lastName: true
+        }
+    });
+    return user;
+});
+exports.getUser = getUser;
+//****** Get all users ******/
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const allUsers = yield prisma.user.findMany({});
     console.log(allUsers);
 });
 exports.getAllUsers = getAllUsers;
-// getAllUsers()
