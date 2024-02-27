@@ -51,8 +51,6 @@ userRouter.post('/signin',async (req : Request, res : Response) => {
         password : password
     })
 
-    console.log(userName)
-    console.log(password)
     if(!success){
         res.status(401).json({
             message : "Please enter valid email and password"
@@ -75,6 +73,15 @@ userRouter.post('/signin',async (req : Request, res : Response) => {
         authToken : authToken
     })
 
+})
+
+userRouter.get('/bulk',validateAuth,async (req : Request,res : Response) => {
+
+    const allUsers = await getAllUsers();
+
+    res.status(200).json({
+        users : allUsers
+    })
 })
 
 export default  userRouter;

@@ -81,7 +81,7 @@ export const getUser = async (userName : string) => {
 export const getAllUsers = async () => {
     
     const allUsers = await prisma.user.findMany({})
-    console.log(allUsers)
+    return allUsers;
 }
 
 

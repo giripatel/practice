@@ -74,5 +74,6 @@ exports.getUser = getUser;
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const allUsers = yield prisma.user.findMany({});
     console.log(allUsers);
+    return allUsers;
 });
 exports.getAllUsers = getAllUsers;

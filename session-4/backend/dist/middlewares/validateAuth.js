@@ -12,12 +12,15 @@ const validateAuth = (req, res, next) => {
         if (token) {
             const hasAccount = jsonwebtoken_1.default.verify(token, secrets_1.JWT_SCRET);
             if (hasAccount) {
+                res.locals.email = hasAccount;
                 next();
             }
         }
-        res.status(401).json({
-            message: "Please login"
-        });
+        else {
+            res.status(401).json({
+                message: "Please login"
+            });
+        }
     }
     catch (error) {
         res.status(401).json({

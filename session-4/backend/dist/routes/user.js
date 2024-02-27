@@ -13,6 +13,7 @@ const express_1 = require("express");
 const validation_1 = require("../zodvalidation/validation");
 const db_1 = require("../db/db");
 const createAuthToken_1 = require("../middlewares/createAuthToken");
+const validateAuth_1 = require("../middlewares/validateAuth");
 const userRouter = (0, express_1.Router)();
 userRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, firstName, lastName, password } = req.body;
@@ -46,8 +47,6 @@ userRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
         userName: userName,
         password: password
     });
-    console.log(userName);
-    console.log(password);
     if (!success) {
         res.status(401).json({
             message: "Please enter valid email and password"
@@ -55,7 +54,6 @@ userRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
         return;
     }
     const user = yield (0, db_1.getUser)(userName);
-    console.log(user);
     if (!user) {
         res.status(403).json({
             message: "Please create an account"
@@ -66,6 +64,12 @@ userRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
     res.status(200).json({
         message: "your sign is successfull",
         authToken: authToken
+    });
+}));
+userRouter.get('/bulk', validateAuth_1.validateAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const allUsers = yield (0, db_1.getAllUsers)();
+    res.status(200).json({
+        users: allUsers
     });
 }));
 exports.default = userRouter;
