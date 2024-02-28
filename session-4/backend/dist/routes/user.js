@@ -67,6 +67,13 @@ userRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
         authToken: authToken
     });
 }));
+userRouter.get('/details', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userName = res.locals.email;
+    const userDetails = yield (0, db_1.getUser)(userName);
+    res.status(200).json({
+        details: userDetails
+    });
+}));
 userRouter.get('/bulk', validateAuth_1.validateAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const allUsers = yield (0, db_1.getAllUsers)();
     res.status(200).json({

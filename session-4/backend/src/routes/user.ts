@@ -75,6 +75,18 @@ userRouter.post('/signin',async (req : Request, res : Response) => {
 
 })
 
+
+userRouter.get('/details',async (req : Request, res : Response) => {
+
+    const userName = res.locals.email;
+
+    const userDetails = await getUser(userName)
+    
+    res.status(200).json({
+        details : userDetails
+    })
+})
+
 userRouter.get('/bulk',validateAuth,async (req : Request,res : Response) => {
 
     const allUsers = await getAllUsers();
