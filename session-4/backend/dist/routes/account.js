@@ -18,10 +18,25 @@ accountRoute.get('/balance', validateAuth_1.validateAuth, (req, res) => __awaite
     const email = res.locals.email;
     const balance = yield (0, db_1.getBalance)(email);
     res.status(200).json({
-        balance: balance
+        balance
     });
 }));
 accountRoute.patch('/transfer', validateAuth_1.validateAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const to = req.body.to;
+    const amount = req.body.amount;
+    const from = res.locals.email;
+    try {
+        const { balance } = yield (0, db_1.transferAmount)(from, to, amount);
+        res.json({
+            balance
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            message: "Insufficient Balance"
+        });
+        return;
+    }
 }));
 accountRoute.patch('/add', validateAuth_1.validateAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const amount = req.body.amount;

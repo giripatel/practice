@@ -1,5 +1,8 @@
 import { Prisma, PrismaClient, } from "@prisma/client";
 import {PrismaClientKnownRequestError} from'@prisma/client/runtime/binary'
+import { error } from "console";
+import { text } from "stream/consumers";
+import { number } from "zod";
 const prisma = new PrismaClient();
 
 //******* Create user *******/
@@ -87,16 +90,17 @@ export const getAllUsers = async () => {
 
 export const getBalance = async (userName : string) => {
 
-    const getBalance = await prisma.user.findFirst({
+    const getBalance = await prisma.account.findFirst({
         where : {
             userName : userName,
         },select : {
-            account : {select : { balance : true}}
+            balance : true
         }
     })
     if(getBalance){
-    return getBalance;
+    return getBalance.balance;
     }
+
 }
 
 export const updateBalance = async (userName : string,amount : number) => {
@@ -133,4 +137,36 @@ export const deductBalance = async (userName : string , amount : number) => {
     })
 
     return deductBalance;
+}
+
+export const transferAmount = async (from : string, to : string, amount : number) => {
+
+    return prisma.$transaction(async (tx) => {
+
+        const sender = await tx.account.update({
+            where : {
+                userName : from
+            },
+            data : {
+                balance : {decrement : amount}
+            },select : {
+                balance : true
+            }
+        })
+
+        if(sender.balance < 0){
+            throw new Error(`InsufficientBalance`);
+        }
+
+        const recipient = await tx.account.update({
+            where : {
+                userName : to
+            },
+            data : {
+                balance : {increment : amount}
+            }
+        })
+
+        return sender;
+    })
 }

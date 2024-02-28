@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBalance = exports.getBalance = exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
+exports.transferAmount = exports.deductBalance = exports.updateBalance = exports.getBalance = exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
 const client_1 = require("@prisma/client");
 const binary_1 = require("@prisma/client/runtime/binary");
 const prisma = new client_1.PrismaClient();
@@ -77,15 +77,15 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getAllUsers = getAllUsers;
 const getBalance = (userName) => __awaiter(void 0, void 0, void 0, function* () {
-    const getBalance = yield prisma.user.findFirst({
+    const getBalance = yield prisma.account.findFirst({
         where: {
             userName: userName,
         }, select: {
-            account: { select: { balance: true } }
+            balance: true
         }
     });
     if (getBalance) {
-        return getBalance;
+        return getBalance.balance;
     }
 });
 exports.getBalance = getBalance;
@@ -103,3 +103,45 @@ const updateBalance = (userName, amount) => __awaiter(void 0, void 0, void 0, fu
     return updataBalance;
 });
 exports.updateBalance = updateBalance;
+//*******************************************
+//   Need to add exception handling 
+//******************************************
+const deductBalance = (userName, amount) => __awaiter(void 0, void 0, void 0, function* () {
+    const deductBalance = yield prisma.account.update({
+        where: {
+            userName: userName
+        },
+        data: {
+            balance: { decrement: amount }
+        }, select: {}
+    });
+    return deductBalance;
+});
+exports.deductBalance = deductBalance;
+const transferAmount = (from, to, amount) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        const sender = yield tx.account.update({
+            where: {
+                userName: from
+            },
+            data: {
+                balance: { decrement: amount }
+            }, select: {
+                balance: true
+            }
+        });
+        if (sender.balance < 0) {
+            throw new Error(`InsufficientBalance`);
+        }
+        const recipient = yield tx.account.update({
+            where: {
+                userName: to
+            },
+            data: {
+                balance: { increment: amount }
+            }
+        });
+        return sender;
+    }));
+});
+exports.transferAmount = transferAmount;
