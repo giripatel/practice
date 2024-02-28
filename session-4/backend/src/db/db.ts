@@ -114,3 +114,23 @@ export const updateBalance = async (userName : string,amount : number) => {
 
     return updataBalance;
 }
+
+
+//*******************************************
+//   Need to add exception handling 
+//******************************************
+export const deductBalance = async (userName : string , amount : number) => {
+    
+    const deductBalance = await prisma.account.update({
+        where : {
+            userName : userName
+        },
+        data : {
+            balance : {decrement : amount}
+        },select : {
+
+        }
+    })
+
+    return deductBalance;
+}
