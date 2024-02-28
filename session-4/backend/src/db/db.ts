@@ -85,3 +85,16 @@ export const getAllUsers = async () => {
 }
 
 
+export const getBalance = async (userName : string) => {
+
+    const getBalance = await prisma.user.findFirst({
+        where : {
+            userName : userName,
+        },select : {
+            account : {select : { balance : true}}
+        }
+    })
+    if(getBalance){
+    return getBalance;
+    }
+}

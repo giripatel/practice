@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
+exports.getBalance = exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
 const client_1 = require("@prisma/client");
 const binary_1 = require("@prisma/client/runtime/binary");
 const prisma = new client_1.PrismaClient();
@@ -73,7 +73,19 @@ exports.getUser = getUser;
 //****** Get all users ******/
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const allUsers = yield prisma.user.findMany({});
-    console.log(allUsers);
     return allUsers;
 });
 exports.getAllUsers = getAllUsers;
+const getBalance = (userName) => __awaiter(void 0, void 0, void 0, function* () {
+    const getBalance = yield prisma.user.findFirst({
+        where: {
+            userName: userName,
+        }, select: {
+            account: { select: { balance: true } }
+        }
+    });
+    if (getBalance) {
+        return getBalance;
+    }
+});
+exports.getBalance = getBalance;
