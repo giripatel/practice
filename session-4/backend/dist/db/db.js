@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBalance = exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
+exports.updateBalance = exports.getBalance = exports.getAllUsers = exports.getUser = exports.delletUser = exports.updateUser = exports.createUser = void 0;
 const client_1 = require("@prisma/client");
 const binary_1 = require("@prisma/client/runtime/binary");
 const prisma = new client_1.PrismaClient();
@@ -89,3 +89,17 @@ const getBalance = (userName) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getBalance = getBalance;
+const updateBalance = (userName, amount) => __awaiter(void 0, void 0, void 0, function* () {
+    const updataBalance = yield prisma.account.update({
+        where: {
+            userName: userName
+        },
+        data: {
+            balance: { increment: amount }
+        }, select: {
+            balance: true
+        }
+    });
+    return updataBalance;
+});
+exports.updateBalance = updateBalance;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signInSchema = exports.mySchema = void 0;
+exports.amountSchema = exports.signInSchema = exports.mySchema = void 0;
 const zod_1 = require("zod");
 // add an erro if schema false to know which parameter failed
 exports.mySchema = zod_1.z.object({
@@ -13,3 +13,4 @@ exports.signInSchema = zod_1.z.object({
     userName: zod_1.z.string().email(),
     password: zod_1.z.string().min(6)
 });
+exports.amountSchema = zod_1.z.number();

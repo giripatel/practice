@@ -13,3 +13,5 @@ export const signInSchema = z.object({
     userName : z.string().email(),
     password : z.string().min(6)
 })
+
+export const amountSchema = z.number();

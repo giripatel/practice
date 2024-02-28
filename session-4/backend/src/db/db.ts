@@ -98,3 +98,19 @@ export const getBalance = async (userName : string) => {
     return getBalance;
     }
 }
+
+export const updateBalance = async (userName : string,amount : number) => {
+
+    const updataBalance = await prisma.account.update({
+        where : {
+            userName : userName
+        },
+        data : {
+            balance : {increment : amount}
+        },select : {
+            balance : true
+        }
+    })
+
+    return updataBalance;
+}
