@@ -14,4 +14,10 @@ accountRoute.get('/balance',validateAuth,async (req : Request,res : Response) =>
     })
 })
 
+accountRoute.patch('/transfer',validateAuth,async (req : Request, res : Response) => {
+
+    
+
+})
+
 export default  accountRoute;

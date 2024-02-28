@@ -20,6 +20,7 @@ userRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, funct
     const balance = Math.floor(Math.random() * 1000) + 1;
     console.log(req.body);
     const userInputValidation = validation_1.mySchema.safeParse(req.body);
+    console.log(userInputValidation);
     if (!userInputValidation.success) {
         res.status(401).json({
             message: "Please enter your inputs correctly"

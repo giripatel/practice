@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  userName  String   @unique
+  id        Int     @default(autoincrement())
+  userName  String  @id @unique
   password  String
   firstName String
   lastName  String
@@ -24,7 +24,7 @@ model User {
 
 model Account {
   id      Int  @id @default(autoincrement())
-  user    User @relation(fields: [userId], references: [id])
+  user    User @relation(fields: [userName], references: [userName])
   balance Int
-  userId  Int  @unique
+  userName  String  @unique
 }

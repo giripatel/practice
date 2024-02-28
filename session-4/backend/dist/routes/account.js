@@ -20,4 +20,6 @@ accountRoute.get('/balance', validateAuth_1.validateAuth, (req, res) => __awaite
         balance: balance
     });
 }));
+accountRoute.patch('/transfer', validateAuth_1.validateAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
 exports.default = accountRoute;
