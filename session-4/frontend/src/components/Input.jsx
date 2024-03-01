@@ -10,7 +10,7 @@ const Input = ({
 }) => {
   return (
     <div>
-      <h3 className={` font-semibold my-1`}>{label}</h3>
+      <h3 className={` text-sm `}>{label}</h3>
       <input className={`${className} ${width} ${height} border-solid  border-slate-700 border-2 rounded-md `} type={type} id={label} />
     </div>
   )

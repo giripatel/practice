@@ -9,8 +9,8 @@ const Button = ({
 
 }) => {
   return (
-    <div>
-      <button className={`${width} ${height} ${buttonColor} ${className} p-2 text-white rounded-md`}>{children}</button>
+    <div className='class="flex items-center justify-center'>
+      <button className={` ${width} ${height} ${buttonColor} ${className} text-sm  w-36 py-2 text-white rounded-md`}>{children}</button>
     </div>
   )
 }

@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import './App.css'
-import Input from './components/Input'
-import Button from './components/Button'
+import Signup from './pages/Signup'
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
     <div className='flex justify-center items-center'>
-      
+        <Signup></Signup>
       </div>
     </>
   )
