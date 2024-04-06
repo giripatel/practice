@@ -4,7 +4,7 @@ const SmallText = ({children}) => {
   // text-slate-600 w-[360px]
   return (
     <div>
-      <p className='text-slate-600 w-[693px] text-3xl'>{children}</p>
+      <p className='text-slate-600 w-[490px] text-xl'>{children}</p>
     </div>
   )
 }

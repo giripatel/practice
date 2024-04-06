@@ -96,5 +96,6 @@ userRouter.get('/bulk',validateAuth,async (req : Request,res : Response) => {
     })
 })
 
+
 export default  userRouter;
 
