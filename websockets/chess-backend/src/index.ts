@@ -1,12 +1,13 @@
 import { WebSocketServer } from 'ws'
+import { GameManager } from './GameManager'
 
 const wss = new WebSocketServer({port : 3000})
+const game = new GameManager();
 
 wss.on('connection', (ws : any) => {
-    ws.on('err',console.error)
-
-    ws.on('message', (data : any) => {
-        console.log("received: %s", data)
+    game.addUser(ws)
+    ws.on('close', (data : any) => {
+        game.removeUser(ws)
     })
     ws.send("hello this is connected")
 })
